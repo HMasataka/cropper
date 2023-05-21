@@ -129,7 +129,7 @@ const cropContainer = css`
   position: relative;
   width: 100%;
   background-color: #333;
-  height: 200px;
+  height: 500px;
 `;
 
 const croppedImageStyle = css`
