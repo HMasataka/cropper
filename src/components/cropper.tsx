@@ -114,7 +114,7 @@ const CropComponent: React.FC<CropComponentProps> = ({}) => {
         </div>
       )}
       <button onClick={showCroppedImage} css={btn}>
-        AAA
+        Done
       </button>
       {croppedImage && (
         <img css={croppedImageStyle} src={croppedImageSrc} alt="" />
