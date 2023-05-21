@@ -17,13 +17,13 @@ export const createImage = (url: string): Promise<HTMLImageElement> =>
 export default async function getCroppedImg(
   imageSrc: string,
   pixelCrop: Area
-): Promise<string> {
+): Promise<File> {
   const image = await createImage(imageSrc);
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
   if (!ctx) {
-    return "";
+    return {} as File;
   }
 
   // canvasサイズを設定
@@ -50,8 +50,9 @@ export default async function getCroppedImg(
 
   // canvasを画像に変換
   return new Promise((resolve, reject) => {
-    canvas.toBlob((file) => {
-      if (file !== null) resolve(URL.createObjectURL(file));
+    canvas.toBlob((blob) => {
+      if (blob !== null)
+        resolve(new File([blob], "example.jpg", { type: "image/jpeg" }));
     }, "image/jpeg");
   });
 }

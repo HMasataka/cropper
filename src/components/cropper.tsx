@@ -17,7 +17,8 @@ const CropComponent: React.FC<CropComponentProps> = ({}) => {
   const [zoom, setZoom] = useState(1);
   const [file, setFile] = useState<File>();
   const [image, setImage] = useState<string>("");
-  const [croppedImage, setCroppedImage] = useState<string>("");
+  const [croppedImageSrc, setCroppedImageSrc] = useState<string>("");
+  const [croppedImage, setCroppedImage] = useState<File | undefined>();
   const [openState, setOpenState] = useState<boolean>(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>();
 
@@ -75,6 +76,29 @@ const CropComponent: React.FC<CropComponentProps> = ({}) => {
     };
   }, [file]);
 
+  useEffect(() => {
+    let fileReader: FileReader;
+    let ignore = false;
+    if (croppedImage) {
+      fileReader = new FileReader();
+      fileReader.onload = (e: ProgressEvent<FileReader>) => {
+        const result = e.target?.result;
+        if (result && !ignore) {
+          setCroppedImageSrc(result as string);
+        }
+      };
+      fileReader.readAsDataURL(croppedImage);
+      console.log(croppedImage);
+    }
+
+    return () => {
+      ignore = true;
+      if (fileReader && fileReader.readyState === 1) {
+        fileReader.abort();
+      }
+    };
+  }, [croppedImage]);
+
   return (
     <>
       <input type="file" accept=".png, .jpg, .jpeg" onChange={changeHandler} />
@@ -95,7 +119,7 @@ const CropComponent: React.FC<CropComponentProps> = ({}) => {
         AAA
       </button>
       {croppedImage && (
-        <img css={croppedImageStyle} src={croppedImage} alt="" />
+        <img css={croppedImageStyle} src={croppedImageSrc} alt="" />
       )}
     </>
   );
