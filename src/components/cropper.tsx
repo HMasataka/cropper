@@ -46,7 +46,6 @@ const CropComponent: React.FC<CropComponentProps> = ({}) => {
 
     const file = e.target.files[0];
     if (!file.type.match(imageMimeType)) {
-      alert("Image mime type is not valid");
       return;
     }
 
@@ -88,7 +87,6 @@ const CropComponent: React.FC<CropComponentProps> = ({}) => {
         }
       };
       fileReader.readAsDataURL(croppedImage);
-      console.log(croppedImage);
     }
 
     return () => {
